@@ -6,12 +6,12 @@ resource "aws_s3_bucket" "default" {
     target_bucket = var.logging_bucket
     target_prefix = "${var.name}/"
   }
-  
+
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        kms_master_key_id = "${aws_kms_key.mykey.arn}"
+        kms_master_key_id = var.kms_key_arn
         sse_algorithm     = "aws:kms"
-      }  
+      }
   tags = var.tags
 }
