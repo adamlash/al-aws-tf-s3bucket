@@ -16,7 +16,7 @@ func TestS3(t *testing.T) {
 	t.Parallel()
 
 	// Give Bucket our Name String
-	expectedName := fmt.Sprintf("al-bucket-test-%s", strings.(ToLower(random.UniqueId())))
+	expectedName := fmt.Sprintf("al-bucket-test-%s", strings.ToLower(random.UniqueId()))
 	// Choose a Random Region
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
 
@@ -27,13 +27,13 @@ func TestS3(t *testing.T) {
 
 		// Vars to Pass to the Module via -var. Made up from Above Strings
 		Vars: map[string]interface{}{
-			"name":	expectedName
-		}
+			"name":	expectedName,
+		},
 
 		// Environment Variables to run alongside Terraform
 		EnvVars: map[string]string{
-			"AWS_DEFAULT_REGION": awsRegion
-		}
+			"AWS_DEFAULT_REGION": awsRegion,
+		},
 	  }
 	  // At the end of the test, run `terraform destroy`
 	  defer terraform.Destroy(t, terraformOptions)
@@ -42,10 +42,8 @@ func TestS3(t *testing.T) {
 	  terraform.InitAndApply(t, terraformOptions)
 
 	  // Run `terraform output` to get the value of output variables
-	  actualBucketName := terraform.Output(t, terraformOptions, "name")
-
-	  // Look up Tags of the S3 Bucket
-
+	  actualBucketName := terraform.Output(t, terraformOptions, "bucket_id")
+	  
 	  // Verify we're getting back the outputs we expect
 	  assert.Equal(t, expectedName, actualBucketName)
 	}
